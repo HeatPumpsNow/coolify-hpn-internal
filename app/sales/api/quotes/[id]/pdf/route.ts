@@ -5,9 +5,10 @@ import { generateProposalHTML, defaultCompanyInfo } from '@/lib/pdf-generator';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     const user = await getAuthUser(request);
     
     if (!user) {
