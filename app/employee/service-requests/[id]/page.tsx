@@ -20,7 +20,7 @@ interface ServiceRequestSummary {
   createdAt: string;
 }
 
-export default function anyServiceRequestDetailPage() {
+export default function EmployeeServiceRequestDetailPage() {
   const params = useParams();
   const router = useRouter();
   const serviceRequestId = params.id as string;

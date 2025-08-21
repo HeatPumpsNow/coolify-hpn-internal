@@ -70,7 +70,7 @@ export default function EmployeeDashboard() {
             </div>
             <div className="ml-4">
               <h3 className="text-2xl font-bold text-gray-900">0</h3>
-              <p className="text-sm text-gray-600">anys Today</p>
+              <p className="text-sm text-gray-600">Jobs Today</p>
             </div>
           </div>
         </div>

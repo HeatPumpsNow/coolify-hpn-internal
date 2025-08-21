@@ -35,7 +35,7 @@ interface EarningsSummary {
   ytdNet: number;
   ytdTax: number;
   avgHoursPerWeek: number;
-  totalanysCompleted: number;
+  totalJobsCompleted: number;
   totalBonuses: number;
   currentPayPeriod: {
     hoursWorked: number;
@@ -198,8 +198,8 @@ export default function EarningsPage() {
                 </svg>
               </div>
               <div className="ml-4">
-                <h3 className="text-2xl font-bold text-gray-900">{summary.totalanysCompleted}</h3>
-                <p className="text-sm text-gray-600">anys Completed</p>
+                <h3 className="text-2xl font-bold text-gray-900">{summary.totalJobsCompleted}</h3>
+                <p className="text-sm text-gray-600">Jobs Completed</p>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function EarningsPage() {
               <h3 className="text-2xl font-bold text-purple-900">
                 {summary.currentPayPeriod.jobsCompleted}
               </h3>
-              <p className="text-purple-700">anys Completed</p>
+              <p className="text-purple-700">Jobs Completed</p>
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@ export default function EarningsPage() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2">Performance</h4>
-                        <p>anys: {entry.jobCount}</p>
+                        <p>Jobs: {entry.jobCount}</p>
                         <p>Photos: {entry.photoCount}</p>
                       </div>
                       <div>

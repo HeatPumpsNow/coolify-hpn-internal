@@ -18,7 +18,7 @@ export default function JobsPage() {
   }, []);
 
   useEffect(() => {
-    filteranys();
+    filterJobs();
   }, [jobs, statusFilter, urgencyFilter]);
 
   const loadData = async () => {
@@ -26,12 +26,12 @@ export default function JobsPage() {
       // Load employee session
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setany(sessionData.employee);
+      setEmployee(sessionData.employee);
 
       // Load jobs
       const jobsResponse = await fetch('/api/employee/jobs');
       const jobsData = await jobsResponse.json();
-      setanys(jobsData.jobs || []);
+      setJobs(jobsData.jobs || []);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
@@ -39,7 +39,7 @@ export default function JobsPage() {
     }
   };
 
-  const filteranys = () => {
+  const filterJobs = () => {
     let filtered = jobs;
 
     if (statusFilter !== 'all') {
@@ -50,10 +50,10 @@ export default function JobsPage() {
       filtered = filtered.filter(job => job.urgency === urgencyFilter);
     }
 
-    setFilteredanys(filtered);
+    setFilteredJobs(filtered);
   };
 
-  const updateanyStatus = async (jobId: string, newStatus: string) => {
+  const updateJobStatus = async (jobId: string, newStatus: string) => {
     try {
       const response = await fetch(`/api/employee/jobs/${jobId}/status`, {
         method: 'PATCH',
@@ -115,7 +115,7 @@ export default function JobsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My anys</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Jobs</h1>
         <p className="text-gray-600">
           Manage your assigned jobs and track progress.
         </p>
@@ -132,7 +132,7 @@ export default function JobsPage() {
             </div>
             <div className="ml-4">
               <h3 className="text-2xl font-bold text-gray-900">{jobStats.total}</h3>
-              <p className="text-sm text-gray-600">Total anys</p>
+              <p className="text-sm text-gray-600">Total Jobs</p>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function JobsPage() {
           <p className="text-sm text-gray-600">Track your time across today's jobs before clocking out</p>
         </div>
         <TimeAllocationTreeStyled
-          employee={employee ? { id: employee.id, name: `${employee.firstName} ${employee.lastName}`, department: employee.role || 'HVAC' } : { id: 'emp-001', name: 'any', department: 'HVAC' }}
+          employee={employee ? { id: employee.id, name: `${employee.firstName} ${employee.lastName}`, department: employee.role || 'HVAC' } : { id: 'emp-001', name: 'Employee', department: 'HVAC' }}
           onAllocate={(allocations: any) => {
             console.log('Time allocated:', allocations);
             // Here we would save the time allocations to the database
@@ -231,9 +231,9 @@ export default function JobsPage() {
         </div>
       </div>
 
-      {/* anys List */}
+      {/* Jobs List */}
       <div className="space-y-6">
-        {filteredanys.length === 0 ? (
+        {filteredJobs.length === 0 ? (
           <div className="card text-center py-8">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -242,7 +242,7 @@ export default function JobsPage() {
             <p className="text-gray-600">No jobs match your current filters.</p>
           </div>
         ) : (
-          filteredanys.map((job) => (
+          filteredJobs.map((job) => (
             <div key={job.id} className="card hover:shadow-lg transition-shadow duration-200">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
@@ -303,19 +303,19 @@ export default function JobsPage() {
                 <div className="flex flex-col gap-2 ml-4">
                   {job.status === 'scheduled' && (
                     <button
-                      onClick={() => updateanyStatus(job.id, 'in-progress')}
+                      onClick={() => updateJobStatus(job.id, 'in-progress')}
                       className="btn-primary text-sm"
                     >
-                      Start any
+                      Start Job
                     </button>
                   )}
                   
                   {job.status === 'in-progress' && (
                     <button
-                      onClick={() => updateanyStatus(job.id, 'completed')}
+                      onClick={() => updateJobStatus(job.id, 'completed')}
                       className="btn-success text-sm"
                     >
-                      Complete any
+                      Complete Job
                     </button>
                   )}
 
