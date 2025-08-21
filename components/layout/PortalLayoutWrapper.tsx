@@ -22,12 +22,9 @@ const LAYOUT_EXCLUDED_ROUTES = [
 function getPortalFromPath(pathname: string): PortalRole | null {
   if (pathname.startsWith('/employee')) return 'employee'
   if (pathname.startsWith('/owner')) return 'owner'
-  if (pathname.startsWith('/service')) return 'service'
-  if (pathname.startsWith('/installer')) return 'installer'
-  if (pathname.startsWith('/supplier')) return 'supplier'
-  if (pathname.startsWith('/admin')) return 'admin'
-  if (pathname.startsWith('/partner')) return 'partner'
   if (pathname.startsWith('/sales')) return 'sales'
+  if (pathname.startsWith('/service')) return 'service'
+  if (pathname.startsWith('/project')) return 'project'
   return null
 }
 

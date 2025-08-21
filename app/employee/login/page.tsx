@@ -1,0 +1,26 @@
+'use client';
+
+import { LoginPage } from '@heat-pumps-now/features';
+
+export default function EmployeeLoginPage() {
+  return (
+    <LoginPage
+      portalType="employee"
+      portalName="Employee Portal"
+      logoSrc="/logo.svg"
+      apiEndpoint="/api/auth/login"
+      redirectPath="/employee/dashboard"
+      showRememberMe={true}
+      showDemoUsers={false}
+      customBranding={{
+        primaryColor: '#059669',
+        backgroundColor: 'linear-gradient(to bottom right, #ecfdf5, #ffffff)',
+        cardBackground: '#ffffff'
+      }}
+      helpLink={{
+        text: 'IT support',
+        href: '/support'
+      }}
+    />
+  );
+}

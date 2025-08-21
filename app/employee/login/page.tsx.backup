@@ -1,0 +1,251 @@
+'use client';
+
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
+import { useAuth } from '@/contexts/SharedAuthContext';
+// import { AuthClientError } from '@heatpumpsnow/auth-client';
+class AuthClientError extends Error {}
+// import DevLoginHelper from '../../../shared/components/DevLoginHelper';
+
+function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { login, logout, user: employee, isLoading: authLoading } = useAuth();
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    rememberMe: false,
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Track when component is mounted to avoid hydration issues
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      console.log('[LOGIN] Starting login for:', formData.email);
+      await login(formData.email, formData.password, formData.rememberMe);
+      console.log('[LOGIN] Login successful!');
+      
+      // Navigate to dashboard instead of reloading
+      setIsLoading(false);
+      
+      // Use window.location.href for a full navigation
+      window.location.href = '/employee/dashboard';
+    } catch (error) {
+      console.error('Login error:', error);
+      if (error instanceof AuthClientError) {
+        setError(error.message);
+      } else {
+        setError(error instanceof Error ? error.message : 'Login failed. Please try again.');
+      }
+      setIsLoading(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
+
+  const fillTestCredentials = (email: string, password: string = 'password123') => {
+    console.log('[LOGIN] Filling test credentials for:', email);
+    
+    // Update state
+    setFormData({
+      email: email,
+      password: password,
+      rememberMe: false
+    });
+    
+    // Also directly update the input values as a fallback
+    const emailInput = document.getElementById('email') as HTMLInputElement;
+    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    
+    if (emailInput) {
+      emailInput.value = email;
+    }
+    if (passwordInput) {
+      passwordInput.value = password;
+    }
+    
+    console.log('[LOGIN] Credentials filled:', { email, password });
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <div className="mx-auto mb-8">
+            <img 
+              src="/logo-horizontal.svg" 
+              alt="Heat Pumps Now" 
+              className="mx-auto h-16 w-auto mb-4"
+            />
+          </div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Employee Portal
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Sign in to access your employee dashboard
+          </p>
+          
+        </div>
+        
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div>
+              <label htmlFor="email" className="sr-only">
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="off"
+                required
+                value={formData.email}
+                onChange={handleInputChange}
+                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                placeholder="Email address"
+              />
+            </div>
+            <div>
+              <label htmlFor="password" className="sr-only">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="off"
+                required
+                value={formData.password}
+                onChange={handleInputChange}
+                className="relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
+                placeholder="Password"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center">
+              <input
+                id="rememberMe"
+                name="rememberMe"
+                type="checkbox"
+                checked={formData.rememberMe}
+                onChange={handleInputChange}
+                className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+              />
+              <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-900">
+                Remember me
+              </label>
+            </div>
+          </div>
+
+          {error && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="text-sm text-red-700">{error}</div>
+            </div>
+          )}
+
+          <div>
+            <button
+              type="submit"
+              disabled={isLoading || authLoading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {(isLoading || authLoading) ? 'Signing in...' : 'Sign in'}
+            </button>
+          </div>
+
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-gray-50 text-gray-500">Testing Accounts</span>
+              </div>
+            </div>
+            
+            <div className="mt-4 p-4 bg-primary-50 rounded-md">
+              <p className="text-sm font-medium text-primary-900 mb-3">Click to Auto-Fill Credentials:</p>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    fillTestCredentials('employee@heatpumpsnow.com', 'Test123!@#');
+                  }}
+                  className="text-left px-3 py-2 bg-white border border-primary-200 rounded hover:bg-primary-50 transition-colors text-sm"
+                >
+                  <div className="font-medium text-primary-900">Employee</div>
+                  <div className="text-primary-700 text-xs">Emma Employee</div>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    fillTestCredentials('field@heatpumpsnow.com', 'Test123!@#');
+                  }}
+                  className="text-left px-3 py-2 bg-white border border-primary-200 rounded hover:bg-primary-50 transition-colors text-sm"
+                >
+                  <div className="font-medium text-primary-900">Field Tech</div>
+                  <div className="text-primary-700 text-xs">Frank Field</div>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    fillTestCredentials('hr@heatpumpsnow.com', 'Test123!@#');
+                  }}
+                  className="text-left px-3 py-2 bg-white border border-primary-200 rounded hover:bg-primary-50 transition-colors text-sm"
+                >
+                  <div className="font-medium text-primary-900">HR Manager</div>
+                  <div className="text-primary-700 text-xs">Helen Resources</div>
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    fillTestCredentials('test@heatpumpsnow.com', 'password123');
+                  }}
+                  className="text-left px-3 py-2 bg-white border border-primary-200 rounded hover:bg-primary-50 transition-colors text-sm"
+                >
+                  <div className="font-medium text-primary-900">Test User</div>
+                  <div className="text-primary-700 text-xs">Multi-Portal Access</div>
+                </button>
+              </div>
+              <div className="mt-3 text-xs text-primary-600 bg-primary-100 p-2 rounded">
+                <strong>Note:</strong> Passwords are auto-filled when you click a user
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return <LoginForm />;
+}

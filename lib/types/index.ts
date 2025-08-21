@@ -1,7 +1,7 @@
 // Shared TypeScript types for Heat Pumps Now Internal Application
 
 // User role types for the unified portal system
-export type PortalRole = 'employee' | 'owner' | 'service' | 'installer' | 'supplier' | 'admin' | 'partner' | 'sales'
+export type PortalRole = 'employee' | 'owner' | 'sales' | 'service' | 'project'
 export type EmployeeRole = 'technician' | 'installer' | 'apprentice' | 'lead_technician' | 'supervisor'
 export type OwnerRole = 'owner' | 'manager' | 'admin'
 export type EmployeeStatus = 'active' | 'inactive' | 'on_leave' | 'terminated'
@@ -477,10 +477,7 @@ export const HTTP_STATUS = {
 export const PORTAL_ROLES = {
   EMPLOYEE: 'employee',
   OWNER: 'owner',
-  SERVICE: 'service',
-  INSTALLER: 'installer',
-  SUPPLIER: 'supplier',
-  ADMIN: 'admin',
-  PARTNER: 'partner',
   SALES: 'sales',
+  SERVICE: 'service',
+  PROJECT: 'project',
 } as const

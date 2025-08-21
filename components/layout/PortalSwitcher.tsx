@@ -31,47 +31,26 @@ const PORTAL_CONFIG: Record<PortalRole, {
     icon: '🏢',
     color: 'bg-purple-500'
   },
-  service: {
-    name: 'Service',
-    description: 'Service requests and scheduling',
-    href: '/service',
-    icon: '🔧',
-    color: 'bg-green-500'
-  },
-  installer: {
-    name: 'Installer',
-    description: 'Installation projects and equipment',
-    href: '/installer',
-    icon: '⚡',
-    color: 'bg-yellow-500'
-  },
-  supplier: {
-    name: 'Supplier',
-    description: 'Parts and inventory management',
-    href: '/supplier',
-    icon: '📦',
-    color: 'bg-orange-500'
-  },
-  admin: {
-    name: 'Admin',
-    description: 'System administration and settings',
-    href: '/admin',
-    icon: '⚙️',
-    color: 'bg-red-500'
-  },
-  partner: {
-    name: 'Partner',
-    description: 'Partner collaboration and projects',
-    href: '/partner',
-    icon: '🤝',
-    color: 'bg-indigo-500'
-  },
   sales: {
     name: 'Sales',
     description: 'Leads, opportunities, and revenue tracking',
     href: '/sales',
     icon: '📈',
     color: 'bg-green-500'
+  },
+  service: {
+    name: 'Service',
+    description: 'Service requests and scheduling',
+    href: '/service',
+    icon: '🔧',
+    color: 'bg-orange-500'
+  },
+  project: {
+    name: 'Project',
+    description: 'Project management and coordination',
+    href: '/project',
+    icon: '📋',
+    color: 'bg-indigo-500'
   }
 }
 

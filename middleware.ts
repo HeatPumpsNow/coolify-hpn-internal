@@ -1,18 +1,15 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createServerClient } from '@supabase/ssr'
 import { PortalRole } from '@/lib/types'
 
 // Portal route mappings
 const PORTAL_ROUTES: Record<string, PortalRole[]> = {
-  '/employee': ['employee', 'admin'],
-  '/owner': ['owner', 'admin'],
-  '/service': ['service', 'employee', 'admin'],
-  '/installer': ['installer', 'employee', 'admin'],
-  '/supplier': ['supplier', 'admin'],
-  '/admin': ['admin'],
-  '/partner': ['partner', 'admin'],
-  '/sales': ['sales', 'admin'],
+  '/employee': ['employee'],
+  '/owner': ['owner'],
+  '/sales': ['sales'],
+  '/service': ['service'],
+  '/project': ['project'],
 }
 
 // Public routes that don't require authentication
@@ -47,13 +44,38 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
+    // Create response
+    let response = NextResponse.next({
+      request: {
+        headers: request.headers,
+      },
+    })
+
     // Get Supabase client
-    const supabase = createClient(
+    const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          getAll() {
+            return request.cookies.getAll()
+          },
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            })
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options)
+            )
+          },
+        },
+      }
     )
 
-    // Get session from cookies
+    // Get session
     const { data: { session }, error } = await supabase.auth.getSession()
 
     if (error || !session) {
@@ -76,7 +98,6 @@ export async function middleware(request: NextRequest) {
     }
 
     // Add user info to headers for downstream components
-    const response = NextResponse.next()
     response.headers.set('x-user-id', session.user.id)
     response.headers.set('x-user-email', session.user.email || '')
     
@@ -103,11 +124,20 @@ function getPortalFromPath(pathname: string): PortalRole | null {
 
 async function checkPortalAccess(supabaseUserId: string, requiredPortal: PortalRole): Promise<boolean> {
   try {
-    // This would normally query your database
-    // For now, we'll create a simplified version
-    const supabase = createClient(
+    // Create admin client for database queries
+    const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        cookies: {
+          getAll() { return [] },
+          setAll() { /* no-op */ },
+        },
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false
+        }
+      }
     )
 
     // Query user roles from internal_users table
@@ -147,6 +177,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * - public folder files
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|images|.*\\..*).*)(?!/api.*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|images|.*\\..*).*)$',
   ],
 }

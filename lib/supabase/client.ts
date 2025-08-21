@@ -1,10 +1,11 @@
+import { createBrowserClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
 import { InternalUser, PortalRole, JWTPayload } from '@/lib/types'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey)
 
 // Server-side client with service role key
 export const supabaseAdmin = createClient(
@@ -49,50 +50,40 @@ export async function getCurrentUser() {
   }
 }
 
-// Get user with roles from our internal users table
+// Get user with roles from Supabase Auth user metadata
 export async function getInternalUserWithRoles(supabaseUserId: string): Promise<InternalUser | null> {
   try {
-    const { data: userData, error: userError } = await supabaseAdmin
-      .from('internal_users')
-      .select(`
-        *,
-        user_roles (
-          role,
-          is_primary,
-          permissions
-        )
-      `)
-      .eq('supabase_user_id', supabaseUserId)
-      .single()
+    const { data: authUser, error: authError } = await supabaseAdmin.auth.admin.getUserById(supabaseUserId)
 
-    if (userError) throw userError
-    if (!userData) return null
+    if (authError) throw authError
+    if (!authUser?.user) return null
 
-    const roles: PortalRole[] = userData.user_roles.map((r: any) => r.role)
-    const primaryRole: PortalRole = userData.user_roles.find((r: any) => r.is_primary)?.role || roles[0]
-    const permissions = userData.user_roles.flatMap((r: any) => r.permissions || [])
+    const user = authUser.user
+    const metadata = user.user_metadata || {}
+    const roles: PortalRole[] = metadata.roles || []
+    const primaryRole: PortalRole = roles[0] || 'employee'
 
     return {
-      id: userData.id,
-      email: userData.email,
-      firstName: userData.first_name,
-      lastName: userData.last_name,
-      phone: userData.phone,
+      id: user.id,
+      email: user.email || '',
+      firstName: metadata.first_name || '',
+      lastName: metadata.last_name || '',
+      phone: metadata.phone || '',
       roles,
       primaryRole,
-      permissions,
-      status: userData.status,
-      lastLogin: userData.last_login,
-      createdAt: userData.created_at,
-      updatedAt: userData.updated_at,
+      permissions: ['full_access'], // Default permissions for existing users
+      status: 'active',
+      lastLogin: user.last_sign_in_at,
+      createdAt: user.created_at,
+      updatedAt: user.updated_at,
     }
   } catch (error) {
-    console.error('Error fetching internal user:', error)
+    console.error('Error fetching user from auth:', error)
     return null
   }
 }
 
-// Create a new internal user
+// Create a new user with roles in Auth metadata
 export async function createInternalUser(userData: {
   email: string
   password: string
@@ -103,49 +94,26 @@ export async function createInternalUser(userData: {
   primaryRole: PortalRole
 }) {
   try {
-    // Create Supabase auth user
+    // Create Supabase auth user with metadata containing roles
     const { data: authData, error: authError } = await supabaseAdmin.auth.admin.createUser({
       email: userData.email,
       password: userData.password,
       email_confirm: true,
+      user_metadata: {
+        first_name: userData.firstName,
+        last_name: userData.lastName,
+        phone: userData.phone,
+        roles: userData.roles,
+        primary_role: userData.primaryRole
+      }
     })
 
     if (authError) throw authError
     if (!authData.user) throw new Error('Failed to create auth user')
 
-    // Create internal user record
-    const { data: internalUser, error: userError } = await supabaseAdmin
-      .from('internal_users')
-      .insert({
-        supabase_user_id: authData.user.id,
-        email: userData.email,
-        first_name: userData.firstName,
-        last_name: userData.lastName,
-        phone: userData.phone,
-        status: 'active',
-      })
-      .select()
-      .single()
-
-    if (userError) throw userError
-
-    // Create user roles
-    const roleInserts = userData.roles.map(role => ({
-      user_id: internalUser.id,
-      role,
-      is_primary: role === userData.primaryRole,
-      permissions: {},
-    }))
-
-    const { error: rolesError } = await supabaseAdmin
-      .from('user_roles')
-      .insert(roleInserts)
-
-    if (rolesError) throw rolesError
-
-    return { user: internalUser, error: null }
+    return { user: authData.user, error: null }
   } catch (error) {
-    console.error('Error creating internal user:', error)
+    console.error('Error creating user:', error)
     return { user: null, error }
   }
 }
