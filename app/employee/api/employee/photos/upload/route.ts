@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       `SELECT j.id FROM jobs j 
        INNER JOIN job_assignments ja ON j.id = ja.job_id 
        WHERE j.id = $1 AND ja.employee_id = $2`,
-      [jobId, employee.id]
+      [jobId, employee.user?.id]
     );
 
     if (jobCheck.rows.length === 0) {
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id, uploaded_at`,
       [
-        employee.id,
+        employee.user?.id,
         jobId,
         category,
         filePath,
@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
        (employee_id, category, points, source_type, source_id, notes)
        VALUES ($1, 'photography', 10, 'photo_upload', $2, $3)`,
       [
-        employee.id,
+        employee.user?.id,
         photo.id,
         `Photo uploaded: ${category} - ${file.name}`
       ]

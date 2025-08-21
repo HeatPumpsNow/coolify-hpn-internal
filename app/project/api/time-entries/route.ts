@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth, withMobileAuth } from '@/lib/supabase/server';
+import { withAuthHandler, withMobileAuth } from '@/lib/supabase/server';
 import { query, transaction, registerMobileDevice } from '@/lib/database';
 import { TimeEntryRequest, ApiResponse, TimeEntry } from '@/types';
 import { z } from 'zod';
@@ -81,7 +81,7 @@ const TimeEntryFiltersSchema = z.object({
 /**
  * GET /api/time-entries - List time entries with filtering
  */
-async function handleGet(request: NextRequest, user: any) {
+async function handleGet(request: NextRequest, user: any): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const filters = TimeEntryFiltersSchema.parse(Object.fromEntries(searchParams));
@@ -199,7 +199,7 @@ async function handleGet(request: NextRequest, user: any) {
 /**
  * POST /api/time-entries - Create new time entry
  */
-async function handlePost(request: NextRequest, user: any) {
+async function handlePost(request: NextRequest, user: any): Promise<Response> {
   try {
     const body = await request.json();
     const validatedData = TimeEntrySchema.parse(body);
@@ -427,5 +427,5 @@ async function calculateVarianceAnalysis(client: any, timeEntry: any) {
 }
 
 // Export route handlers with authentication
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
-export const POST = withAuth(handlePost, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const POST = withAuthHandler(handlePost, { allowedUserTypes: ['owner', 'employee'] });

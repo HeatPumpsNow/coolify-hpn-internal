@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       FROM skill_progress
       WHERE employee_id = $1
       ORDER BY category, skill_name
-    `, [employee.id]);
+    `, [employee.user?.id]);
 
     // Group skills by category and calculate stats
     const skillsByCategory = skillsResult.rows.reduce((acc: any, skill: any) => {

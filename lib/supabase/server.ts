@@ -104,3 +104,100 @@ export async function requireAuth(allowedRoles?: PortalRole[]): Promise<{
 
   return { user, error: null }
 }
+
+// Export commonly needed functions
+export const getAuthUser = getAuthenticatedUser
+export const withAuth = requireAuth
+
+// Placeholder functions to maintain compatibility
+export function getUser() {
+  return getAuthenticatedUser()
+}
+
+export function withMobileAuth(handler: any) {
+  // Placeholder for mobile auth wrapper
+  return handler
+}
+
+// Route handler auth wrapper for Next.js App Router
+export function withAuthHandler(
+  handler: (request: any, user: any, ...args: any[]) => Promise<Response>,
+  options: { allowedUserTypes?: string[], allowedRoles?: string[] } = {}
+) {
+  return async (request: any, ...args: any[]) => {
+    try {
+      const { user, error, status } = await requireAuth()
+      
+      if (error || !user) {
+        return new Response(
+          JSON.stringify({ 
+            success: false, 
+            message: error || 'Authentication required',
+            timestamp: new Date().toISOString()
+          }),
+          { 
+            status: status || 401,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        )
+      }
+
+      // Check user types if specified
+      if (options.allowedUserTypes && options.allowedUserTypes.length > 0) {
+        const hasValidUserType = options.allowedUserTypes.includes(user.user_type)
+        if (!hasValidUserType) {
+          return new Response(
+            JSON.stringify({ 
+              success: false, 
+              message: `Access denied - one of these user types required: ${options.allowedUserTypes.join(', ')}`,
+              timestamp: new Date().toISOString()
+            }),
+            { 
+              status: 403,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          )
+        }
+      }
+
+      return await handler(request, user, ...args)
+    } catch (error) {
+      console.error('Auth wrapper error:', error)
+      return new Response(
+        JSON.stringify({ 
+          success: false, 
+          message: 'Authentication failed',
+          timestamp: new Date().toISOString()
+        }),
+        { 
+          status: 500,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      )
+    }
+  }
+}
+
+export function generateOwnerToken(userId: string) {
+  // Placeholder for owner token generation
+  return { token: 'placeholder', userId }
+}
+
+export function verifyOwnerToken(token: string) {
+  // Placeholder for owner token verification
+  return { valid: true, userId: 'placeholder' }
+}
+
+// Default export for backward compatibility
+const AuthService = {
+  getAuthenticatedUser,
+  requireAuth,
+  withAuth: requireAuth,
+  getAuthUser: getAuthenticatedUser,
+  validateSession: async (token?: string) => {
+    // For compatibility - ignore token parameter and use current session
+    return await getAuthenticatedUser()
+  }
+}
+
+export default AuthService

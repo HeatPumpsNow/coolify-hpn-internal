@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
 
     // Build query for service requests assigned to this employee
     let whereClause = 'WHERE sr.assigned_technician_id = $1';
-    const queryParams: any[] = [employee.id];
+    const queryParams: any[] = [employee.user?.id];
 
     if (status !== 'all') {
       whereClause += ` AND sr.status = $${queryParams.length + 1}`;
@@ -180,7 +180,7 @@ export async function PATCH(request: NextRequest) {
       SELECT id, title, status, assigned_technician_id
       FROM service_requests 
       WHERE id = $1 AND assigned_technician_id = $2
-    `, [serviceRequestId, employee.id]);
+    `, [serviceRequestId, employee.user?.id]);
 
     if (assignmentCheck.rows.length === 0) {
       return NextResponse.json(
@@ -207,7 +207,7 @@ export async function PATCH(request: NextRequest) {
               resolved_at = CASE WHEN $1 = 'resolved' THEN CURRENT_TIMESTAMP ELSE resolved_at END
           WHERE id = $2 AND assigned_technician_id = $3
           RETURNING id, title, status
-        `, [updateData.status, serviceRequestId, employee.id]);
+        `, [updateData.status, serviceRequestId, employee.user?.id]);
         break;
 
       case 'add_notes':
@@ -224,7 +224,7 @@ export async function PATCH(request: NextRequest) {
               updated_at = CURRENT_TIMESTAMP
           WHERE id = $2 AND assigned_technician_id = $3
           RETURNING id, title, resolution_notes
-        `, [updateData.notes, serviceRequestId, employee.id]);
+        `, [updateData.notes, serviceRequestId, employee.user?.id]);
         break;
 
       case 'acknowledge':
@@ -234,7 +234,7 @@ export async function PATCH(request: NextRequest) {
               updated_at = CURRENT_TIMESTAMP
           WHERE id = $1 AND assigned_technician_id = $2 AND status = 'submitted'
           RETURNING id, title, status
-        `, [serviceRequestId, employee.id]);
+        `, [serviceRequestId, employee.user?.id]);
         break;
 
       default:
@@ -289,14 +289,14 @@ export async function PATCH(request: NextRequest) {
             true
           FROM service_requests sr
           WHERE sr.id = $3
-        `, [employee.id, message, serviceRequestId]);
+        `, [employee.user?.id, message, serviceRequestId]);
       }
     }
 
     console.log('Service request updated by employee', {
       serviceRequestId,
       action,
-      employeeId: employee.id
+      employeeId: employee.user?.id
     });
 
     return NextResponse.json({

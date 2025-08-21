@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Get current password hash
     const result = await query(`
       SELECT password_hash FROM employees WHERE id = $1
-    `, [employee.id]);
+    `, [employee.user?.id]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Employee not found' }, { status: 404 });
@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
         password_hash = $1,
         updated_at = CURRENT_TIMESTAMP
       WHERE id = $2
-    `, [newPasswordHash, employee.id]);
+    `, [newPasswordHash, employee.user?.id]);
 
     return NextResponse.json({ success: true });
 

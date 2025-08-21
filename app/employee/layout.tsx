@@ -6,11 +6,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAuth } from '@/components/providers/AuthProvider';
 
-interface EmployeeLayoutProps {
+interface anyLayoutProps {
   children: React.ReactNode;
 }
 
-function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
+function anyLayoutContent({ children }: anyLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { user, isLoading, signOut } = useAuth();
@@ -28,7 +28,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
   // Simple role-based permissions
   const permissions = {
     canUploadPhotos: true,
-    canViewOwnJobs: true,
+    canViewOwnanys: true,
     canContributeKnowledge: true,
     canViewFinancials: user?.roles?.includes('owner') || user?.roles?.includes('sales'),
   };
@@ -51,7 +51,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
         // Use replace to prevent back button issues
         router.replace('/employee/login');
       } else {
-        console.log('[LAYOUT] Employee authenticated:', employee.email);
+        console.log('[LAYOUT] any authenticated:', employee.email);
       }
     }
   }, [isLoading, employee, pathname, router, hasInitialized]);
@@ -135,7 +135,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
       show: permissions.canUploadPhotos,
     },
     {
-      name: 'Jobs',
+      name: 'anys',
       href: '/employee/jobs',
       icon: (
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -143,7 +143,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
         </svg>
       ),
       current: pathname.startsWith('/employee/jobs'),
-      show: permissions.canViewOwnJobs,
+      show: permissions.canViewOwnanys,
     },
     {
       name: 'Service Requests',
@@ -154,7 +154,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
         </svg>
       ),
       current: pathname.startsWith('/employee/service-requests'),
-      show: permissions.canViewOwnJobs, // Same permission as jobs
+      show: permissions.canViewOwnanys, // Same permission as jobs
     },
     {
       name: 'Skills',
@@ -251,7 +251,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
           
           <div className="flex items-center justify-between px-4 py-2">
             <h1 className="text-lg font-semibold text-gray-900">
-              {navigation.find(item => item.current)?.name || 'Employee Portal'}
+              {navigation.find(item => item.current)?.name || 'any Portal'}
             </h1>
             <div className="flex items-center space-x-2">
               <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
@@ -403,6 +403,6 @@ function MobileSidebar({ employee, navigation, onLogout, onClose }: any) {
   );
 }
 
-export default function EmployeeLayout({ children }: EmployeeLayoutProps) {
-  return <EmployeeLayoutContent>{children}</EmployeeLayoutContent>;
+export default function anyLayout({ children }: anyLayoutProps) {
+  return <anyLayoutContent>{children}</anyLayoutContent>;
 }

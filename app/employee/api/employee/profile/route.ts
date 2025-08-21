@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
         dashboard_preferences
       FROM employees 
       WHERE id = $1
-    `, [employee.id]);
+    `, [employee.user?.id]);
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Employee not found' }, { status: 404 });
@@ -130,7 +130,7 @@ export async function PUT(request: NextRequest) {
       profileData.address.zipCode,
       JSON.stringify(profileData.preferences.notifications),
       JSON.stringify(profileData.preferences.dashboard),
-      employee.id
+      employee.user?.id
     ]);
 
     return NextResponse.json({ success: true });

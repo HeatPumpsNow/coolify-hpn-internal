@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Employee } from '@/types';
+import { any } from '@/types';
 
 interface KnowledgeArticle {
   id: string;
@@ -28,7 +28,7 @@ interface KnowledgeCategory {
 }
 
 export default function KnowledgePage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employee, setany] = useState<any | null>(null);
   const [articles, setArticles] = useState<KnowledgeArticle[]>([]);
   const [categories, setCategories] = useState<KnowledgeCategory[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<KnowledgeArticle[]>([]);
@@ -50,7 +50,7 @@ export default function KnowledgePage() {
       // Load employee session
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setEmployee(sessionData.employee);
+      setany(sessionData.employee);
 
       // Load knowledge base data
       const knowledgeResponse = await fetch('/api/employee/knowledge');

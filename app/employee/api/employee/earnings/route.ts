@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     }
 
     const employee = await AuthService.validateSession(tokenCookie.value);
-    if (!employee) {
+    if (!employee || !employee.user) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 });
     }
 
@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
       WHERE ep.employee_id = $1 
         AND EXTRACT(YEAR FROM pp.start_date) = $2
       ORDER BY pp.start_date DESC
-    `, [employee.id, year]);
+    `, [employee.user?.id, year]);
 
     // If no payroll data exists, create sample data
     if (payrollResult.rows.length === 0) {
@@ -103,7 +103,7 @@ export async function GET(request: NextRequest) {
             ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)
             ON CONFLICT (employee_id, pay_period_id) DO NOTHING
           `, [
-            employee.id, periodId, regularHours, overtimeHours, regularRate, overtimeRate,
+            employee.user?.id, periodId, regularHours, overtimeHours, regularRate, overtimeRate,
             totalGross, federalTax, stateTax, ficaTax, medicareTax, healthInsurance,
             dentalInsurance, retirementContrib, 0, netPay, Math.floor(Math.random() * 15) + 5,
             Math.floor(Math.random() * 50) + 20, bonusAmount,
@@ -142,7 +142,7 @@ export async function GET(request: NextRequest) {
         WHERE ep.employee_id = $1 
           AND EXTRACT(YEAR FROM pp.start_date) = $2
         ORDER BY pp.start_date DESC
-      `, [employee.id, year]);
+      `, [employee.user?.id, year]);
 
       payrollResult.rows = updatedPayrollResult.rows;
     }

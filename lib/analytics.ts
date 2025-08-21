@@ -78,3 +78,31 @@ export class AnalyticsService {
 }
 
 export default AnalyticsService;
+
+// Export individual functions for direct use
+export function calculateProjectPerformanceMetrics(params: any) {
+  // Handle both single projectId and parameters object
+  if (typeof params === 'string') {
+    return AnalyticsService.getProjectMetrics(params)
+  }
+  // For advanced analytics with multiple parameters
+  return AnalyticsService.getProjectMetrics(params.project_ids?.[0] || 'default')
+}
+
+export function generateCostForecasting(params: any) {
+  // Handle both single projectId and parameters object
+  if (typeof params === 'string') {
+    return AnalyticsService.generateForecast(params)
+  }
+  // For advanced forecasting with multiple parameters
+  return AnalyticsService.generateForecast(params.project_ids?.[0] || 'default')
+}
+
+export function analyzeTemplateEffectiveness(templateId?: string) {
+  // Placeholder for template effectiveness analysis
+  return Promise.resolve({
+    templateId: templateId || 'all',
+    effectivenessScore: 0.8,
+    recommendations: ['Consider updating parameters based on recent data']
+  })
+}

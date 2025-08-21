@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EmployeeAuthService } from '@/lib/supabase/server-refactored';
-import { ApiError } from '@/shared/api-core';
+import { EmployeeAuthService, ApiError } from '@/lib/supabase/server-refactored';
 
 export async function POST(request: NextRequest) {
   try {

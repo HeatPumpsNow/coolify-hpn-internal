@@ -19,7 +19,7 @@ import {
   MessageSquare,
   Settings
 } from 'lucide-react';
-import { Employee } from '@/types';
+import { any } from '@/types';
 
 interface ServiceRequest {
   id: string;
@@ -40,7 +40,7 @@ interface ServiceRequest {
   customerPhotos: string[];
   voiceMemoPath?: string;
   status: string;
-  relatedJobId?: string;
+  relatedanyId?: string;
   jobStatus?: string;
   jobScheduledDate?: string;
   resolutionNotes?: string;
@@ -54,7 +54,7 @@ interface ServiceRequest {
 }
 
 export default function ServiceRequestsPage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employee, setany] = useState<any | null>(null);
   const [serviceRequests, setServiceRequests] = useState<ServiceRequest[]>([]);
   const [filteredRequests, setFilteredRequests] = useState<ServiceRequest[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
@@ -81,7 +81,7 @@ export default function ServiceRequestsPage() {
       // Load employee session
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setEmployee(sessionData.employee);
+      setany(sessionData.employee);
 
       // Load service requests
       const requestsResponse = await fetch('/api/employee/service-requests');
@@ -438,7 +438,7 @@ export default function ServiceRequestsPage() {
                       Created {formatDate(request.createdAt)}
                       {request.jobScheduledDate && (
                         <span className="ml-2 text-blue-600">
-                          • Job scheduled: {formatDate(request.jobScheduledDate)}
+                          • any scheduled: {formatDate(request.jobScheduledDate)}
                         </span>
                       )}
                     </div>

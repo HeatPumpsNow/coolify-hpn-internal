@@ -2,11 +2,11 @@
 
 import { LoginPage } from '@/shared/features/auth';
 
-export default function EmployeeLoginPage() {
+export default function anyLoginPage() {
   return (
     <LoginPage
       portalType="employee"
-      portalName="Employee Portal"
+      portalName="any Portal"
       logoSrc="/logo.svg"
       apiEndpoint="/api/auth/login"
       redirectPath="/employee/dashboard"

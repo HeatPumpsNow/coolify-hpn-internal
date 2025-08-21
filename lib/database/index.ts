@@ -108,3 +108,22 @@ export async function closePool(): Promise<void> {
 // Export the pool for direct access if needed
 export { pool }
 export default getPool
+
+// Additional exports for compatibility
+export const transaction = withTransaction
+export const db = getPool
+
+// Placeholder functions
+export function healthCheck() {
+  return testConnection()
+}
+
+export function getProjectHierarchy(projectId: string) {
+  // Placeholder for project hierarchy
+  return Promise.resolve([])
+}
+
+export function registerMobileDevice(deviceInfo: any) {
+  // Placeholder for mobile device registration
+  return Promise.resolve({ success: true })
+}

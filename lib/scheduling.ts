@@ -26,3 +26,8 @@ export class SchedulingService {
 }
 
 export default SchedulingService;
+
+// Export individual functions for direct use
+export function generateProjectSchedule(projectId: string) {
+  return SchedulingService.getProjectSchedule(projectId)
+}

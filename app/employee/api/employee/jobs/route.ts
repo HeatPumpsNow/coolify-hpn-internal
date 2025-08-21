@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
            WHEN 'cancelled' THEN 4
          END,
          j.scheduled_date ASC`,
-      [employee.id]
+      [employee.user?.id]
     );
 
     const jobs = result.rows.map((row: any) => ({

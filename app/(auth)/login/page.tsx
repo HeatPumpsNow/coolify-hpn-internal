@@ -26,8 +26,8 @@ export default function LoginPage() {
       const { user, session, error: signInError } = await signInWithEmail(email, password)
 
       if (signInError) {
-        setError(signInError.message || 'Failed to sign in')
-        logger.error('Sign in error', signInError)
+        setError((signInError as Error)?.message || 'Failed to sign in')
+        logger.error('Sign in error', signInError as Error)
         return
       }
 

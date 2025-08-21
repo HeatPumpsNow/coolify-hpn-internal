@@ -28,7 +28,7 @@ export async function POST(
     // Verify service request exists and is assigned to this employee
     const serviceRequestResult = await query(`
       SELECT id FROM service_requests WHERE id = $1 AND assigned_technician_id = $2
-    `, [serviceRequestId, employee.id]);
+    `, [serviceRequestId, employee.user?.id]);
 
     if (serviceRequestResult.rows.length === 0) {
       return NextResponse.json({ error: 'Service request not found or not assigned to you' }, { status: 404 });
@@ -82,7 +82,7 @@ export async function POST(
       RETURNING id, created_at
     `, [
       serviceRequestId,
-      employee.id,
+      employee.user?.id,
       'employee',
       workType,
       description,
@@ -101,7 +101,7 @@ export async function POST(
       serviceRequestId,
       'work_record_added',
       `Work record added: ${workType} - ${description}`,
-      employee.id,
+      employee.user?.id,
       'employee',
       JSON.stringify(photoUrls)
     ]);
@@ -119,7 +119,7 @@ export async function POST(
     `, [
       serviceRequestId,
       'employee',
-      employee.id,
+      employee.user?.id,
       'work_update',
       `Technician update: ${workType} - ${description}`
     ]);
@@ -127,7 +127,7 @@ export async function POST(
     logger.info('Employee work record added', {
       serviceRequestId,
       workRecordId: workRecordResult.rows[0].id,
-      performedBy: employee.id,
+      performedBy: employee.user?.id,
       workType
     });
 
@@ -140,7 +140,7 @@ export async function POST(
     });
 
   } catch (error) {
-    logger.error('Add employee work record error', error);
+    logger.error('Add employee work record error', error as Error);
     return NextResponse.json(
       { error: 'Failed to add work record' },
       { status: 500 }

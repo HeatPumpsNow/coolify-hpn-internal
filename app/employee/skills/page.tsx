@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Employee } from '@/types';
+import { any } from '@/types';
 
 interface SkillCategory {
   id: string;
@@ -35,7 +35,7 @@ interface Achievement {
 }
 
 export default function SkillsPage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employee, setany] = useState<any | null>(null);
   const [skillCategories, setSkillCategories] = useState<SkillCategory[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
@@ -50,7 +50,7 @@ export default function SkillsPage() {
       // Load employee session
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setEmployee(sessionData.employee);
+      setany(sessionData.employee);
 
       // Load skills and achievements
       const skillsResponse = await fetch('/api/employee/skills');

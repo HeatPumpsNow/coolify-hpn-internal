@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { query, transaction } from '@/lib/database';
 import { generateProjectSchedule } from '@/lib/scheduling';
 import { ApiResponse } from '@/types';
@@ -54,7 +54,7 @@ const ScheduleUpdateSchema = z.object({
 /**
  * GET /api/projects/[id]/schedule - Get current project schedule
  */
-async function handleGet(request: NextRequest, user: any, { params }: { params: { id: string } }) {
+async function handleGet(request: NextRequest, user: any, { params }: { params: { id: string } }): Promise<Response> {
   try {
     const projectId = params.id;
     const { searchParams } = new URL(request.url);
@@ -173,7 +173,7 @@ async function handleGet(request: NextRequest, user: any, { params }: { params: 
 /**
  * POST /api/projects/[id]/schedule - Generate new project schedule
  */
-async function handlePost(request: NextRequest, user: any, { params }: { params: { id: string } }) {
+async function handlePost(request: NextRequest, user: any, { params }: { params: { id: string } }): Promise<Response> {
   try {
     const projectId = params.id;
     const body = await request.json();
@@ -270,7 +270,7 @@ async function handlePost(request: NextRequest, user: any, { params }: { params:
 /**
  * PUT /api/projects/[id]/schedule - Update existing schedule
  */
-async function handlePut(request: NextRequest, user: any, { params }: { params: { id: string } }) {
+async function handlePut(request: NextRequest, user: any, { params }: { params: { id: string } }): Promise<Response> {
   try {
     const projectId = params.id;
     const body = await request.json();
@@ -529,17 +529,17 @@ function calculateDurationDays(startDate: string, endDate: string): number {
 }
 
 // Export route handlers
-export const GET = withAuth(handleGet, { 
+export const GET = withAuthHandler(handleGet, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });
 
-export const POST = withAuth(handlePost, { 
+export const POST = withAuthHandler(handlePost, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });
 
-export const PUT = withAuth(handlePut, { 
+export const PUT = withAuthHandler(handlePut, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });

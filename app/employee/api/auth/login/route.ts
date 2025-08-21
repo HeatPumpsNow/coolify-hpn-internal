@@ -81,7 +81,7 @@ export async function POST(request: NextRequest) {
       WHERE user_id = $1 
       AND (portal = 'employee' OR portal = '*')
     `;
-    const rolesResult = await pool.query(rolesQuery, [employee.id]);
+    const rolesResult = await pool.query(rolesQuery, [employee.user?.id]);
     
     if (rolesResult.rows.length === 0) {
       console.log('[API] User has no access to employee portal:', email);
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
     // Update last login
     await pool.query(
       'UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1',
-      [employee.id]
+      [employee.user?.id]
     );
 
     // Get all user roles
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
 
     // Create user response (without password hash)
     const user = {
-      id: employee.id,
+      id: employee.user?.id,
       email: employee.email,
       firstName: employee.first_name,
       lastName: employee.last_name,

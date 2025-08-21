@@ -36,7 +36,7 @@ export async function GET(
       JOIN customers c ON sr.customer_id = c.id
       LEFT JOIN customer_equipment ce ON sr.equipment_id = ce.id
       WHERE sr.id = $1 AND sr.assigned_technician_id = $2
-    `, [serviceRequestId, employee.id]);
+    `, [serviceRequestId, employee.user?.id]);
 
     if (serviceRequestResult.rows.length === 0) {
       // Check if service request exists at all for better error messaging
@@ -49,13 +49,13 @@ export async function GET(
       `, [serviceRequestId]);
       
       if (checkExistsResult.rows.length === 0) {
-        logger.warn('Service request not found', { serviceRequestId, employeeId: employee.id });
+        logger.warn('Service request not found', { serviceRequestId, employeeId: employee.user?.id });
         return NextResponse.json({ error: 'Service request not found' }, { status: 404 });
       } else {
         const existingRequest = checkExistsResult.rows[0];
         logger.warn('Service request not assigned to employee', { 
           serviceRequestId, 
-          employeeId: employee.id,
+          employeeId: employee.user?.id,
           assignedTo: existingRequest.assigned_technician_id,
           assignedName: existingRequest.assigned_to,
           status: existingRequest.status
@@ -172,7 +172,7 @@ export async function GET(
     });
 
   } catch (error) {
-    logger.error('Get employee service request details error', error);
+    logger.error('Get employee service request details error', error as Error);
     return NextResponse.json(
       { error: 'Failed to fetch service request details' },
       { status: 500 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { query, transaction } from '@/lib/database';
 import { selectOptimalTemplate, applyConditionalModifications, suggestTeamAssignment } from '@/lib/templates';
 import { ApiResponse, ProjectTemplate } from '@/types';
@@ -70,7 +70,7 @@ const TemplateFiltersSchema = z.object({
 /**
  * GET /api/templates - List available project templates
  */
-async function handleGet(request: NextRequest, user: any) {
+async function handleGet(request: NextRequest, user: any): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const filters = TemplateFiltersSchema.parse(Object.fromEntries(searchParams));
@@ -171,7 +171,7 @@ async function handleGet(request: NextRequest, user: any) {
 /**
  * POST /api/templates - Create new template or select optimal template
  */
-async function handlePost(request: NextRequest, user: any) {
+async function handlePost(request: NextRequest, user: any): Promise<Response> {
   try {
     const body = await request.json();
     const { action } = body;
@@ -286,5 +286,5 @@ async function handlePost(request: NextRequest, user: any) {
 }
 
 // Export route handlers
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
-export const POST = withAuth(handlePost, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const POST = withAuthHandler(handlePost, { allowedUserTypes: ['owner', 'employee'] });

@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       LEFT JOIN article_views av ON ka.id = av.article_id AND av.employee_id = $1
       WHERE ka.status = 'published'
       ORDER BY ka.published_at DESC
-    `, [employee.id]);
+    `, [employee.user?.id]);
 
     const categories = categoriesResult.rows.map((row: any) => ({
       id: row.id,

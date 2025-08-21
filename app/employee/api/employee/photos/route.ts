@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
        INNER JOIN jobs j ON ep.job_id = j.id
        WHERE ep.employee_id = $1
        ORDER BY ep.uploaded_at DESC`,
-      [employee.id]
+      [employee.user?.id]
     );
 
     const photos = result.rows.map((row: any) => ({

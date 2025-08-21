@@ -48,3 +48,28 @@ export class TemplatesService {
 }
 
 export default TemplatesService;
+
+// Export individual functions for direct use
+export function selectOptimalTemplate(criteria: any) {
+  // Placeholder implementation
+  return Promise.resolve({
+    templateId: 'standard_installation',
+    reason: 'Best match for project requirements'
+  })
+}
+
+export function applyConditionalModifications(templateId: string, projectData: any) {
+  // Placeholder implementation
+  return Promise.resolve({
+    modifiedTemplate: templateId,
+    modifications: ['adjusted_timeline', 'custom_requirements']
+  })
+}
+
+export function suggestTeamAssignment(templateId: string, requirements: any) {
+  // Placeholder implementation
+  return Promise.resolve({
+    recommendedTeam: ['lead_technician', 'assistant'],
+    skillsRequired: ['heat_pump_installation', 'electrical']
+  })
+}

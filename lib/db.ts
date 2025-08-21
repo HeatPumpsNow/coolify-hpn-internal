@@ -1,6 +1,6 @@
 // Database utility - redirects to the proper database connection
-import { db } from './database';
+import { pool, query, withTransaction, testConnection, closePool, getPool } from './database';
 
-// Re-export the database connection
-export default db;
-export { db };
+// Re-export the database functions
+export default getPool;
+export { pool, query, withTransaction, testConnection, closePool, getPool };

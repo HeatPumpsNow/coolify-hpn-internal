@@ -30,7 +30,7 @@ export async function signInWithEmail(email: string, password: string) {
     if (error) throw error
     return { user: data.user, session: data.session, error: null }
   } catch (error) {
-    return { user: null, session: null, error }
+    return { user: null, session: null, error: error as Error }
   }
 }
 
@@ -46,7 +46,7 @@ export async function getCurrentUser() {
     if (error) throw error
     return { user, error: null }
   } catch (error) {
-    return { user: null, error }
+    return { user: null, error: error as Error }
   }
 }
 

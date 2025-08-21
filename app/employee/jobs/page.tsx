@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Employee, Job } from '@/types';
+
 import TimeAllocationTreeStyled from '@/components/TimeAllocationTreeStyled';
 
 export default function JobsPage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
-  const [jobs, setJobs] = useState<Job[]>([]);
-  const [filteredJobs, setFilteredJobs] = useState<Job[]>([]);
+  const [employee, setEmployee] = useState<any | null>(null);
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [filteredJobs, setFilteredJobs] = useState<any[]>([]);
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [urgencyFilter, setUrgencyFilter] = useState<string>('all');
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +18,7 @@ export default function JobsPage() {
   }, []);
 
   useEffect(() => {
-    filterJobs();
+    filteranys();
   }, [jobs, statusFilter, urgencyFilter]);
 
   const loadData = async () => {
@@ -26,12 +26,12 @@ export default function JobsPage() {
       // Load employee session
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setEmployee(sessionData.employee);
+      setany(sessionData.employee);
 
       // Load jobs
       const jobsResponse = await fetch('/api/employee/jobs');
       const jobsData = await jobsResponse.json();
-      setJobs(jobsData.jobs || []);
+      setanys(jobsData.jobs || []);
     } catch (error) {
       console.error('Failed to load data:', error);
     } finally {
@@ -39,7 +39,7 @@ export default function JobsPage() {
     }
   };
 
-  const filterJobs = () => {
+  const filteranys = () => {
     let filtered = jobs;
 
     if (statusFilter !== 'all') {
@@ -50,10 +50,10 @@ export default function JobsPage() {
       filtered = filtered.filter(job => job.urgency === urgencyFilter);
     }
 
-    setFilteredJobs(filtered);
+    setFilteredanys(filtered);
   };
 
-  const updateJobStatus = async (jobId: string, newStatus: string) => {
+  const updateanyStatus = async (jobId: string, newStatus: string) => {
     try {
       const response = await fetch(`/api/employee/jobs/${jobId}/status`, {
         method: 'PATCH',
@@ -115,7 +115,7 @@ export default function JobsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Jobs</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">My anys</h1>
         <p className="text-gray-600">
           Manage your assigned jobs and track progress.
         </p>
@@ -132,7 +132,7 @@ export default function JobsPage() {
             </div>
             <div className="ml-4">
               <h3 className="text-2xl font-bold text-gray-900">{jobStats.total}</h3>
-              <p className="text-sm text-gray-600">Total Jobs</p>
+              <p className="text-sm text-gray-600">Total anys</p>
             </div>
           </div>
         </div>
@@ -187,7 +187,7 @@ export default function JobsPage() {
           <p className="text-sm text-gray-600">Track your time across today's jobs before clocking out</p>
         </div>
         <TimeAllocationTreeStyled
-          employee={employee ? { id: employee.id, name: `${employee.firstName} ${employee.lastName}`, department: employee.role || 'HVAC' } : { id: 'emp-001', name: 'Employee', department: 'HVAC' }}
+          employee={employee ? { id: employee.id, name: `${employee.firstName} ${employee.lastName}`, department: employee.role || 'HVAC' } : { id: 'emp-001', name: 'any', department: 'HVAC' }}
           onAllocate={(allocations: any) => {
             console.log('Time allocated:', allocations);
             // Here we would save the time allocations to the database
@@ -231,9 +231,9 @@ export default function JobsPage() {
         </div>
       </div>
 
-      {/* Jobs List */}
+      {/* anys List */}
       <div className="space-y-6">
-        {filteredJobs.length === 0 ? (
+        {filteredanys.length === 0 ? (
           <div className="card text-center py-8">
             <svg className="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -242,7 +242,7 @@ export default function JobsPage() {
             <p className="text-gray-600">No jobs match your current filters.</p>
           </div>
         ) : (
-          filteredJobs.map((job) => (
+          filteredanys.map((job) => (
             <div key={job.id} className="card hover:shadow-lg transition-shadow duration-200">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex-1">
@@ -303,19 +303,19 @@ export default function JobsPage() {
                 <div className="flex flex-col gap-2 ml-4">
                   {job.status === 'scheduled' && (
                     <button
-                      onClick={() => updateJobStatus(job.id, 'in-progress')}
+                      onClick={() => updateanyStatus(job.id, 'in-progress')}
                       className="btn-primary text-sm"
                     >
-                      Start Job
+                      Start any
                     </button>
                   )}
                   
                   {job.status === 'in-progress' && (
                     <button
-                      onClick={() => updateJobStatus(job.id, 'completed')}
+                      onClick={() => updateanyStatus(job.id, 'completed')}
                       className="btn-success text-sm"
                     >
-                      Complete Job
+                      Complete any
                     </button>
                   )}
 

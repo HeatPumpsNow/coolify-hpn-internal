@@ -33,7 +33,7 @@ export async function PATCH(
       `SELECT j.id, j.status as current_status FROM jobs j 
        INNER JOIN job_assignments ja ON j.id = ja.job_id 
        WHERE j.id = $1 AND ja.employee_id = $2`,
-      [jobId, employee.id]
+      [jobId, employee.user?.id]
     );
 
     if (jobCheck.rows.length === 0) {
@@ -66,7 +66,7 @@ export async function PATCH(
          (employee_id, category, points, source_type, source_id, notes)
          VALUES ($1, 'job_completion', 50, 'job', $2, $3)`,
         [
-          employee.id,
+          employee.user?.id,
           jobId,
           'Job completed successfully'
         ]

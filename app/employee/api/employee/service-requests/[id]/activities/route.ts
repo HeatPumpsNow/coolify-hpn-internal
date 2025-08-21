@@ -28,7 +28,7 @@ export async function POST(
     // Verify service request exists and is assigned to this employee
     const serviceRequestResult = await query(`
       SELECT id FROM service_requests WHERE id = $1 AND assigned_technician_id = $2
-    `, [serviceRequestId, employee.id]);
+    `, [serviceRequestId, employee.user?.id]);
 
     if (serviceRequestResult.rows.length === 0) {
       return NextResponse.json({ error: 'Service request not found or not assigned to you' }, { status: 404 });
@@ -78,7 +78,7 @@ export async function POST(
       serviceRequestId,
       'update',
       description,
-      employee.id,
+      employee.user?.id,
       'employee',
       JSON.stringify(photoUrls)
     ]);
@@ -96,7 +96,7 @@ export async function POST(
     `, [
       serviceRequestId,
       'employee',
-      employee.id,
+      employee.user?.id,
       'update',
       `Technician update: ${description}`
     ]);
@@ -104,7 +104,7 @@ export async function POST(
     logger.info('Employee activity added', {
       serviceRequestId,
       activityId: activityResult.rows[0].id,
-      performedBy: employee.id
+      performedBy: employee.user?.id
     });
 
     return NextResponse.json({
@@ -116,7 +116,7 @@ export async function POST(
     });
 
   } catch (error) {
-    logger.error('Add employee activity error', error);
+    logger.error('Add employee activity error', error as Error);
     return NextResponse.json(
       { error: 'Failed to add activity' },
       { status: 500 }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { generateCostForecasting } from '@/lib/analytics';
 import { query } from '@/lib/database';
 import { ApiResponse } from '@/types';
@@ -27,7 +27,7 @@ const PortfolioForecastSchema = z.object({
 /**
  * GET /api/analytics/forecasting - Generate cost forecasting for specific projects
  */
-async function handleGet(request: NextRequest, user: any) {
+async function handleGet(request: NextRequest, user: any): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const queryParams = ForecastingQuerySchema.parse(Object.fromEntries(searchParams));
@@ -108,7 +108,7 @@ async function handleGet(request: NextRequest, user: any) {
 /**
  * POST /api/analytics/forecasting - Generate portfolio-wide forecasting
  */
-async function handlePost(request: NextRequest, user: any) {
+async function handlePost(request: NextRequest, user: any): Promise<Response> {
   try {
     const body = await request.json();
     const queryParams = PortfolioForecastSchema.parse(body);
@@ -346,5 +346,5 @@ function generatePortfolioRecommendations(projectForecasts: any[], portfolioAnal
 }
 
 // Export route handlers
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
-export const POST = withAuth(handlePost, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const POST = withAuthHandler(handlePost, { allowedUserTypes: ['owner', 'employee'] });

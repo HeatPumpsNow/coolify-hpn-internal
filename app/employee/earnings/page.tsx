@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Employee } from '@/types';
 
 interface PayrollEntry {
   id: string;
@@ -36,7 +35,7 @@ interface EarningsSummary {
   ytdNet: number;
   ytdTax: number;
   avgHoursPerWeek: number;
-  totalJobsCompleted: number;
+  totalanysCompleted: number;
   totalBonuses: number;
   currentPayPeriod: {
     hoursWorked: number;
@@ -46,7 +45,7 @@ interface EarningsSummary {
 }
 
 export default function EarningsPage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employee, setEmployee] = useState<any | null>(null);
   const [payrollEntries, setPayrollEntries] = useState<PayrollEntry[]>([]);
   const [summary, setSummary] = useState<EarningsSummary | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
@@ -199,8 +198,8 @@ export default function EarningsPage() {
                 </svg>
               </div>
               <div className="ml-4">
-                <h3 className="text-2xl font-bold text-gray-900">{summary.totalJobsCompleted}</h3>
-                <p className="text-sm text-gray-600">Jobs Completed</p>
+                <h3 className="text-2xl font-bold text-gray-900">{summary.totalanysCompleted}</h3>
+                <p className="text-sm text-gray-600">anys Completed</p>
               </div>
             </div>
           </div>
@@ -228,7 +227,7 @@ export default function EarningsPage() {
               <h3 className="text-2xl font-bold text-purple-900">
                 {summary.currentPayPeriod.jobsCompleted}
               </h3>
-              <p className="text-purple-700">Jobs Completed</p>
+              <p className="text-purple-700">anys Completed</p>
             </div>
           </div>
         </div>
@@ -285,7 +284,7 @@ export default function EarningsPage() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-gray-900 mb-2">Performance</h4>
-                        <p>Jobs: {entry.jobCount}</p>
+                        <p>anys: {entry.jobCount}</p>
                         <p>Photos: {entry.photoCount}</p>
                       </div>
                       <div>

@@ -34,14 +34,14 @@ export async function POST(
     // Check if already bookmarked
     const bookmarkCheck = await query(
       'SELECT id FROM article_bookmarks WHERE article_id = $1 AND employee_id = $2',
-      [articleId, employee.id]
+      [articleId, employee.user?.id]
     );
 
     if (bookmarkCheck.rows.length > 0) {
       // Remove bookmark
       await query(
         'DELETE FROM article_bookmarks WHERE article_id = $1 AND employee_id = $2',
-        [articleId, employee.id]
+        [articleId, employee.user?.id]
       );
 
       return NextResponse.json({
@@ -53,7 +53,7 @@ export async function POST(
       // Add bookmark
       await query(
         'INSERT INTO article_bookmarks (article_id, employee_id) VALUES ($1, $2)',
-        [articleId, employee.id]
+        [articleId, employee.user?.id]
       );
 
       return NextResponse.json({

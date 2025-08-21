@@ -3,16 +3,15 @@
 import { useAuth } from '@/components/providers/AuthProvider';
 
 export default function EmployeeDashboard() {
-  const { user: employee, isLoading } = useAuth();
+  const { user: employee } = useAuth();
 
   // Debug logging
   console.log('[DASHBOARD] Rendering with:', { 
     employee: employee?.email, 
-    isLoading,
     hasLocalStorage: typeof window !== 'undefined' ? localStorage.getItem('employee_user') : 'SSR'
   });
 
-  if (isLoading) {
+  if (!employee) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-pulse">
         <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
@@ -39,7 +38,7 @@ export default function EmployeeDashboard() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
           <div className="flex-1">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              {greeting}, {employee.firstName}!
+              {greeting}, {employee.email}!
             </h1>
             <p className="text-gray-600">
               Welcome to your employee dashboard
@@ -71,7 +70,7 @@ export default function EmployeeDashboard() {
             </div>
             <div className="ml-4">
               <h3 className="text-2xl font-bold text-gray-900">0</h3>
-              <p className="text-sm text-gray-600">Jobs Today</p>
+              <p className="text-sm text-gray-600">anys Today</p>
             </div>
           </div>
         </div>
@@ -156,7 +155,7 @@ export default function EmployeeDashboard() {
           <a href="/employee/jobs" className="p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors group">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-semibold text-indigo-900">Job Management</h3>
+                <h3 className="font-semibold text-indigo-900">any Management</h3>
                 <p className="text-sm text-indigo-700 mt-1">View and manage your assigned jobs</p>
               </div>
               <svg className="w-5 h-5 text-indigo-500 group-hover:text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

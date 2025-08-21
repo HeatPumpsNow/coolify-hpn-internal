@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Employee } from '@/types';
+import { any } from '@/types';
 
 interface ProfileFormData {
   firstName: string;
@@ -34,7 +34,7 @@ interface ProfileFormData {
 }
 
 export default function ProfilePage() {
-  const [employee, setEmployee] = useState<Employee | null>(null);
+  const [employee, setany] = useState<any | null>(null);
   const [formData, setFormData] = useState<ProfileFormData>({
     firstName: '',
     lastName: '',
@@ -83,7 +83,7 @@ export default function ProfilePage() {
       // Load employee session first
       const sessionResponse = await fetch('/api/employee/auth/session');
       const sessionData = await sessionResponse.json();
-      setEmployee(sessionData.employee);
+      setany(sessionData.employee);
 
       // Load profile details from API
       const profileResponse = await fetch('/api/employee/profile');
@@ -539,7 +539,7 @@ export default function ProfilePage() {
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">Job Updates</p>
+                    <p className="font-medium text-gray-900">any Updates</p>
                     <p className="text-sm text-gray-500">Get notified about job assignments and changes</p>
                   </div>
                   <input

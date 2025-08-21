@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { 
   calculateProjectPerformanceMetrics, 
   generateCostForecasting, 
@@ -157,5 +157,5 @@ async function handlePost(request: NextRequest, user: any) {
 }
 
 // Export route handlers
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
-export const POST = withAuth(handlePost, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const POST = withAuthHandler(handlePost, { allowedUserTypes: ['owner', 'employee'] });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { query, transaction, getProjectHierarchy } from '@/lib/database';
 import { ApiResponse, Project } from '@/types';
 import { z } from 'zod';
@@ -381,17 +381,17 @@ async function handleDelete(request: NextRequest, user: any, context: { params: 
 }
 
 // Export route handlers with authentication and project access checks
-export const GET = withAuth(handleGet, { 
+export const GET = withAuthHandler(handleGet, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: false // Temporarily disabled for testing
 });
 
-export const PUT = withAuth(handlePut, { 
+export const PUT = withAuthHandler(handlePut, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });
 
-export const DELETE = withAuth(handleDelete, { 
+export const DELETE = withAuthHandler(handleDelete, { 
   allowedUserTypes: ['owner'],
   requireProjectAccess: true 
 });

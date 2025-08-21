@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { analyzeTemplateEffectiveness } from '@/lib/analytics';
 import { query } from '@/lib/database';
 import { ApiResponse } from '@/types';
@@ -14,7 +14,7 @@ const TemplateAnalysisQuerySchema = z.object({
 /**
  * GET /api/analytics/templates - Get detailed template effectiveness analysis
  */
-async function handleGet(request: NextRequest, user: any) {
+async function handleGet(request: NextRequest, user: any): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const queryParams = TemplateAnalysisQuerySchema.parse(Object.fromEntries(searchParams));
@@ -111,4 +111,4 @@ async function handleGet(request: NextRequest, user: any) {
 }
 
 // Export route handler
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });

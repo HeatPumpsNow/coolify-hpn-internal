@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { query, transaction } from '@/lib/database';
 import { ProjectCreateRequest, ApiResponse, Project } from '@/types';
 import { z } from 'zod';
@@ -34,7 +34,7 @@ const ProjectFiltersSchema = z.object({
 /**
  * GET /api/projects - List projects with filtering and pagination
  */
-async function handleGet(request: NextRequest, user: any) {
+async function handleGet(request: NextRequest, user: any): Promise<Response> {
   try {
     const { searchParams } = new URL(request.url);
     const filters = ProjectFiltersSchema.parse(Object.fromEntries(searchParams));
@@ -193,7 +193,7 @@ async function handleGet(request: NextRequest, user: any) {
 /**
  * POST /api/projects - Create new project from contract or manual setup
  */
-async function handlePost(request: NextRequest, user: any) {
+async function handlePost(request: NextRequest, user: any): Promise<Response> {
   try {
     const body = await request.json();
     const validatedData = ProjectCreateSchema.parse(body);
@@ -464,5 +464,5 @@ async function applyTemplateToProject(
 }
 
 // Export route handlers with authentication
-export const GET = withAuth(handleGet, { allowedUserTypes: ['owner', 'employee'] });
-export const POST = withAuth(handlePost, { allowedUserTypes: ['owner', 'employee'] });
+export const GET = withAuthHandler(handleGet, { allowedUserTypes: ['owner', 'employee'] });
+export const POST = withAuthHandler(handlePost, { allowedUserTypes: ['owner', 'employee'] });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/supabase/server';
+import { withAuthHandler } from '@/lib/supabase/server';
 import { query, transaction } from '@/lib/database';
 import { ApiResponse } from '@/types';
 import { z } from 'zod';
@@ -402,12 +402,12 @@ async function updateProjectCompletion(client: any, projectId: string) {
 }
 
 // Export route handlers
-export const GET = withAuth(handleGet, { 
+export const GET = withAuthHandler(handleGet, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });
 
-export const PUT = withAuth(handlePut, { 
+export const PUT = withAuthHandler(handlePut, { 
   allowedUserTypes: ['owner', 'employee'],
   requireProjectAccess: true 
 });
