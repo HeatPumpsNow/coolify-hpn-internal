@@ -14,9 +14,10 @@ const updateQuoteSchema = z.object({
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     // For development, skip auth check
     // const user = await getAuthUser(request);
     // 
@@ -100,10 +101,11 @@ export async function GET(
 // PUT method for updating quotes table (our new table)
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   let client;
   try {
+    const params = await context.params;
     client = await pool.connect();
     const quoteId = params.id;
     const body = await request.json();
@@ -199,9 +201,10 @@ export async function PUT(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     // For development, skip auth check
     // const user = await getAuthUser(request);
     // 
@@ -328,9 +331,10 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const params = await context.params;
     // For development, skip auth check
     // const user = await getAuthUser(request);
     // 
