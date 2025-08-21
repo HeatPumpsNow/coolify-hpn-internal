@@ -89,4 +89,21 @@ export const AIQuoteAssistant: React.FC<{ onQuoteGenerated?: (quote: AIQuoteResp
   );
 };
 
+// AI utilities for the sales portal
+export const AIUtils = {
+  calculateComplexity: (projectDetails: any) => {
+    // Placeholder complexity calculation
+    return Math.random() * 100;
+  },
+  
+  generateRecommendations: (requirements: string[]) => {
+    // Placeholder recommendations
+    return [
+      'Consider energy efficiency upgrades',
+      'Schedule professional installation',
+      'Plan for seasonal maintenance'
+    ];
+  }
+};
+
 export default AIQuoteAssistant;
