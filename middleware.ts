@@ -12,6 +12,7 @@ const PORTAL_ROUTES: Record<string, PortalRole[]> = {
   '/supplier': ['supplier', 'admin'],
   '/admin': ['admin'],
   '/partner': ['partner', 'admin'],
+  '/sales': ['sales', 'admin'],
 }
 
 // Public routes that don't require authentication

@@ -65,6 +65,13 @@ const PORTAL_CONFIG: Record<PortalRole, {
     href: '/partner',
     icon: '🤝',
     color: 'bg-indigo-500'
+  },
+  sales: {
+    name: 'Sales',
+    description: 'Leads, opportunities, and revenue tracking',
+    href: '/sales',
+    icon: '📈',
+    color: 'bg-green-500'
   }
 }
 

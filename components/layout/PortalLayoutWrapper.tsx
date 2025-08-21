@@ -27,6 +27,7 @@ function getPortalFromPath(pathname: string): PortalRole | null {
   if (pathname.startsWith('/supplier')) return 'supplier'
   if (pathname.startsWith('/admin')) return 'admin'
   if (pathname.startsWith('/partner')) return 'partner'
+  if (pathname.startsWith('/sales')) return 'sales'
   return null
 }
 
