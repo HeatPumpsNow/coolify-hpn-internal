@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { log } from '@/../../shared/utils';
+import { log } from '@/shared/utils';
 import { 
   Headphones,
   AlertTriangle,

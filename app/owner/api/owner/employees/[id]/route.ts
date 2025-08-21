@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OwnerAuthService from '@/lib/auth-owner';
+import OwnerAuthService from '@/lib/supabase/server-owner';
 import { query } from '@/lib/database';
 import { logger } from '@/lib/logger';
 

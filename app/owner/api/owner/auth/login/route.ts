@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { pool } from '@/lib/db';
-import { generateOwnerToken } from '@/lib/auth';
+import { generateOwnerToken } from '@/lib/supabase/server';
 
 export async function POST(request: NextRequest) {
   try {

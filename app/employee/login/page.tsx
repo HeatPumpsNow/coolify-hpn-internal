@@ -1,6 +1,6 @@
 'use client';
 
-import { LoginPage } from '@heat-pumps-now/features';
+import { LoginPage } from '@/shared/features/auth';
 
 export default function EmployeeLoginPage() {
   return (

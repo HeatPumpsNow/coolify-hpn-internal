@@ -17,7 +17,7 @@ export async function POST(
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
-    const { verifyOwnerToken } = await import('@/lib/auth');
+    const { verifyOwnerToken } = await import('@/lib/supabase/server');
     const owner = await verifyOwnerToken(tokenCookie.value);
     if (!owner) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth';
+import { withAuth } from '@/lib/supabase/server';
 import { query, transaction } from '@/lib/database';
 import { selectOptimalTemplate, applyConditionalModifications, suggestTeamAssignment } from '@/lib/templates';
 import { ApiResponse, ProjectTemplate } from '@/types';

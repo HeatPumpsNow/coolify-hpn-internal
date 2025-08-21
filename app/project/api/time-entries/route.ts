@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth, withMobileAuth } from '@/lib/auth';
+import { withAuth, withMobileAuth } from '@/lib/supabase/server';
 import { query, transaction, registerMobileDevice } from '@/lib/database';
 import { TimeEntryRequest, ApiResponse, TimeEntry } from '@/types';
 import { z } from 'zod';

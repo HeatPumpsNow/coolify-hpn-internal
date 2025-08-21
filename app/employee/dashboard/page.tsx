@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@/contexts/SharedAuthContext';
+import { useAuth } from '@/components/providers/AuthProvider';
 
 export default function EmployeeDashboard() {
   const { user: employee, isLoading } = useAuth();

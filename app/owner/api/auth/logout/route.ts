@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { OwnerAuthService } from '@/lib/auth-refactored';
+import { OwnerAuthService } from '@/lib/supabase/server-refactored';
 
 export async function POST(request: NextRequest) {
   try {

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { verifyOwnerToken } from '@/lib/auth';
+import { verifyOwnerToken } from '@/lib/supabase/server';
 
 // Store active connections
 const connections = new Set<ReadableStreamDefaultController>();

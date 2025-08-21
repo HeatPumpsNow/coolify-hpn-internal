@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/auth';
+import { getAuthUser } from '@/lib/supabase/server';
 import { query } from '@/lib/database';
 
 export async function GET(request: NextRequest) {

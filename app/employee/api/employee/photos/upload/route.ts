@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
-import AuthService from '@/lib/auth';
+import AuthService from '@/lib/supabase/server';
 import { query } from '@/lib/database';
 
 export async function POST(request: NextRequest) {

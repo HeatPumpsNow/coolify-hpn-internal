@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth';
+import { withAuth } from '@/lib/supabase/server';
 import { generateCostForecasting } from '@/lib/analytics';
 import { query } from '@/lib/database';
 import { ApiResponse } from '@/types';

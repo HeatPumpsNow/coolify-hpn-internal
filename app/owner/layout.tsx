@@ -19,7 +19,7 @@ import {
   Wrench
 } from 'lucide-react';
 
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/components/providers/AuthProvider';
 import NotificationCenter from '@/components/notifications/NotificationCenter';
 import NotificationToast from '@/components/notifications/NotificationToast';
 

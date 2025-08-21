@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { pool } from '@/lib/db';
-import { verifyOwnerToken } from '@/lib/auth';
+import { verifyOwnerToken } from '@/lib/supabase/server';
 
 export async function GET(request: NextRequest) {
   try {

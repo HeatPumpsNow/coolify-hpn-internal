@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAuthUser } from '@/lib/auth';
+import { getAuthUser } from '@/lib/supabase/server';
 import { query } from '@/lib/database';
 import pool from '@/lib/db';
 import { z } from 'zod';

@@ -16,7 +16,7 @@ export async function POST(
       return NextResponse.json({ error: 'Authentication required' }, { status: 401 });
     }
 
-    const AuthService = await import('@/lib/auth');
+    const AuthService = await import('@/lib/supabase/server');
     const employee = await AuthService.default.validateSession(tokenCookie.value);
     if (!employee) {
       return NextResponse.json({ error: 'Invalid session' }, { status: 401 });

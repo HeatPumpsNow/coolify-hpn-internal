@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyOwnerToken } from '@/lib/auth';
+import { verifyOwnerToken } from '@/lib/supabase/server';
 import { query } from '@/lib/database';
 import { logger } from '@/lib/logger';
 

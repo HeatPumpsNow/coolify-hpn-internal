@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { EmployeeAuthService } from '@/lib/auth-refactored';
-import { ApiError } from '@heat-pumps-now/api';
+import { EmployeeAuthService } from '@/lib/supabase/server-refactored';
+import { ApiError } from '@/shared/api-core';
 
 export async function POST(request: NextRequest) {
   try {

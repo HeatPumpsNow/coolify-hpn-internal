@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withAuth } from '@/lib/auth';
+import { withAuth } from '@/lib/supabase/server';
 import { query, transaction, getProjectHierarchy } from '@/lib/database';
 import { ApiResponse, Project } from '@/types';
 import { z } from 'zod';

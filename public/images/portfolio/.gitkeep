@@ -1,0 +1,19 @@
+# Portfolio Images Directory
+
+This directory contains project photos for the portfolio section.
+
+## Image Requirements:
+- Hero images should be 16:9 aspect ratio at 800x450px minimum
+- Use JPG format for photographs
+- Optimize for web (under 200KB per image)
+- Include descriptive alt text in the code
+
+## Project Images Needed:
+- berkeley-craftsman-hero.jpg
+- walnut-creek-modern-hero.jpg  
+- oakland-ranch-hero.jpg
+- piedmont-solar-hero.jpg
+- lafayette-addition-hero.jpg
+- sf-victorian-hero.jpg
+- orinda-estate-hero.jpg
+- berkeley-adu-hero.jpg

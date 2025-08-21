@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ProjectAuthService } from '@/lib/auth-refactored';
+import { ProjectAuthService } from '@/lib/supabase/server-refactored';
 
 export async function POST(request: NextRequest) {
   try {

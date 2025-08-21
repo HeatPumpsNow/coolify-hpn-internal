@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { SalesAuthService, ApiError } from '@/lib/auth-refactored';
+import { SalesAuthService, ApiError } from '@/lib/supabase/server-refactored';
 
 export async function POST(request: NextRequest) {
   try {

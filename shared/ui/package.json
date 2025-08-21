@@ -1,0 +1,26 @@
+{
+  "name": "@heat-pumps-now/ui",
+  "version": "1.0.0",
+  "description": "Shared UI components for Heat Pumps Now platform",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "lint": "eslint . --ext .ts,.tsx"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19",
+    "@types/react-dom": "^19.1.7",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

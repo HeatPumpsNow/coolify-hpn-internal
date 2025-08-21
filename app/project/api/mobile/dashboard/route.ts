@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { withMobileAuth } from '@/lib/auth';
+import { withMobileAuth } from '@/lib/supabase/server';
 import { query } from '@/lib/database';
 import { ApiResponse } from '@/types';
 

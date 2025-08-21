@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/SharedAuthContext';
+import { useAuth } from '@/components/providers/AuthProvider';
 import TimeClock from '@/components/TimeClock';
 import { useRouter } from 'next/navigation';
 
