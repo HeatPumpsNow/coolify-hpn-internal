@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Heat Pumps Now - Simplified Black Icon -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 100 100" style="enable-background:new 0 0 100 100;" xml:space="preserve">
+<style type="text/css">
+	.black{fill:#000000;}
+</style>
+<g transform="translate(50,50) scale(0.35) translate(-50,-50)">
+	<!-- Simplified Arrows -->
+	<path class="black" d="M55,35c5,0,9,4,9,9v18h-5.5c-1.5,0-2.5,2-1.5,3.5l10,14c1,1.5,3,1.5,4,0l10-14c1-1.5,0-3.5-1.5-3.5H74v-18
+		c0-9-7.5-16.5-16.5-16.5H45l5.5,7.5H55z"/>
+	<path class="black" d="M45,75c-5,0-9-4-9-9V47h6.5c1.5,0,2.5-2,1.5-3.5l-10-14c-1-1.5-3-1.5-4,0l-10,14c-1,1.5,0,3.5,1.5,3.5H26v19
+		c0,9,7.5,16.5,16.5,16.5H55L49.5,75H45z"/>
+	<!-- Simplified House -->
+	<polygon class="black" points="85,42 50,15 15,42 12,38 50,10 88,38"/>
+	<polygon class="black" points="58,18 72,18 72,30"/>
+</g>
+</svg>
