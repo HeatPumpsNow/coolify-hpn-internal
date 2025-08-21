@@ -14,9 +14,9 @@
     "migrate:create": "node-pg-migrate create",
     "db:test": "tsx -e \"import('./lib/database').then(db => db.testConnection().then(() => process.exit(0)).catch(() => process.exit(1)))\"",
     "deploy": "./scripts/deploy.sh",
-    "health-check": "curl -f http://localhost:3000/api/health",
+    "health-check": "curl -f http://localhost:3004/api/health",
     "docker:build": "docker build -t heatpumps-internal .",
-    "docker:run": "docker run -p 3000:3000 --env-file .env.production heatpumps-internal"
+    "docker:run": "docker run -p 3004:3004 --env-file .env.production heatpumps-internal"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",

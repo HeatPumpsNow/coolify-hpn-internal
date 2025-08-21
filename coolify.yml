@@ -14,33 +14,22 @@ services:
         - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
     
     ports:
-      - "3000:3000"
+      - "3004:3004"
     
     environment:
       - NODE_ENV=production
+      - PORT=3004
+      - HOSTNAME=0.0.0.0
       - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
       - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
       - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
-      - DATABASE_HOST=${DATABASE_HOST}
-      - DATABASE_PORT=${DATABASE_PORT}
-      - DATABASE_NAME=${DATABASE_NAME}
-      - DATABASE_USER=${DATABASE_USER}
-      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
-      - DATABASE_SSL=${DATABASE_SSL}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
-      - NEXTAUTH_URL=${NEXTAUTH_URL}
-      - LOG_LEVEL=${LOG_LEVEL}
     
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3004/api/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 10s
     
     restart: unless-stopped
     
@@ -52,4 +41,4 @@ services:
       - "traefik.http.routers.heatpumps-internal.rule=Host(`${DOMAIN}`)"
       - "traefik.http.routers.heatpumps-internal.tls=true"
       - "traefik.http.routers.heatpumps-internal.tls.certresolver=letsencrypt"
-      - "traefik.http.services.heatpumps-internal.loadbalancer.server.port=3000"
+      - "traefik.http.services.heatpumps-internal.loadbalancer.server.port=3004"
