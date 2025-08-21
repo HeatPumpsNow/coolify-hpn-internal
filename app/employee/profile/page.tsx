@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { any } from '@/types';
+import { Employee } from '@/types';
 
 interface ProfileFormData {
   firstName: string;
