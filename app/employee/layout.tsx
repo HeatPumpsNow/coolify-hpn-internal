@@ -13,7 +13,7 @@ interface EmployeeLayoutProps {
 function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, isLoading, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
 
@@ -42,7 +42,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
     }
 
     // Wait for auth context to initialize
-    if (!isLoading && !hasInitialized) {
+    if (!loading && !hasInitialized) {
       setHasInitialized(true);
       
       // Check if user is authenticated
@@ -54,7 +54,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
         console.log('[LAYOUT] Employee authenticated:', employee.email);
       }
     }
-  }, [isLoading, employee, pathname, router, hasInitialized]);
+  }, [loading, employee, pathname, router, hasInitialized]);
 
   // Skip layout for login page
   if (pathname === '/employee/login') {
@@ -74,7 +74,7 @@ function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
   };
 
   // Show loading state while auth is being checked
-  if (isLoading || !hasInitialized) {
+  if (loading || !hasInitialized) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
