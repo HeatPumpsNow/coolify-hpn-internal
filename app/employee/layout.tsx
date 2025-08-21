@@ -13,16 +13,16 @@ interface EmployeeLayoutProps {
 function EmployeeLayoutContent({ children }: EmployeeLayoutProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, loading, signOut } = useAuth();
+  const { user, internalUser, loading, signOut } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasInitialized, setHasInitialized] = useState(false);
 
-  // Extract employee data from Supabase user
-  const employee = user ? {
-    firstName: user.firstName || '',
-    lastName: user.lastName || '',
-    email: user.email || '',
-    role: user.primaryRole || 'employee'
+  // Extract employee data from internal user
+  const employee = internalUser ? {
+    firstName: internalUser.firstName || '',
+    lastName: internalUser.lastName || '',
+    email: internalUser.email || '',
+    role: internalUser.primaryRole || 'employee'
   } : null;
 
   // Simple role-based permissions
