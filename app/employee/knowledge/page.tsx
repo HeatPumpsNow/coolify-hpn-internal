@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Employee } from '@/types';
+import { Employee } from '@/lib/types';
 
 interface KnowledgeArticle {
   id: string;

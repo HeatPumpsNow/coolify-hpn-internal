@@ -19,7 +19,7 @@ import {
   MessageSquare,
   Settings
 } from 'lucide-react';
-import { any } from '@/types';
+import { Employee } from '@/lib/types';
 
 interface ServiceRequest {
   id: string;

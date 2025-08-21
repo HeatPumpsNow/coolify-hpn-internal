@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Employee, Job, Photo } from '@/types';
+import { Employee, Job, JobPhoto as Photo } from '@/lib/types';
 
 interface PhotoUploadData {
   jobId: string;
